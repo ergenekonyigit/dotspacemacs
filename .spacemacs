@@ -34,14 +34,16 @@ values."
      ;;        shell-default-position 'bottom)
      ;; spell-checking
      syntax-checking
-     version-control
      eyebrowse
-     circe
      auto-complete
      yasnippet
      auto-complete-c-headers
      ;; google-c-style
      elpy
+     ;; spotify
+     ;; django
+     ;; react
+     c-c++
 
      )
    ;; List of additional packages that will be installed without being
@@ -62,6 +64,11 @@ This function is called at the very startup of Spacemacs initialization
 before layers configuration.
 You should not put any user code in there besides modifying the variable
 values."
+  (setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")
+                           ("ELPA" . "http://tromey.com/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")))
+
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
@@ -275,9 +282,12 @@ layers configuration. You are free to put any user code."
 
   (define-key global-map (kbd "C-c ;") 'iedit-mode)
 
-  ;; (require 'google-c-style)
-  ;; (add-hook 'c-mode-common-hook 'google-set-c-style)
-  ;; (add-hook 'c-mode-common-hook 'google-make-newline-indent)
+  (setq-default dotspacemacs-configuration-layers
+                '((c-c++ :variables
+                         c-c++-default-mode-for-headers 'c++-mode)))
+
+  (setq-default dotspacemacs-configuration-layers
+                '((c-c++ :variables c-c++-enable-clang-support t)))
 
   (semantic-mode 1)
   (defun my:add-semantic-to-autocomplete()
@@ -295,12 +305,9 @@ layers configuration. You are free to put any user code."
   (smooth-scrolling-mode t)
   (eyebrowse-mode t)
 
-  (add-to-list 'load-path "~/.emacs.d/layers/+lang/lisp/circe")
-  (require 'circe)
-
   (setq powerline-default-separator 'nil)
   (display-time-mode 1)
-  
+
   )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
